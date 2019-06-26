@@ -1,6 +1,5 @@
-let { buildSchema } = require('graphql');
 
- const schema = buildSchema(`
+ const typeDefs = [`
     type Query {
       hello(text: String): String
       buckets: [Bucket]
@@ -14,7 +13,7 @@ let { buildSchema } = require('graphql');
       _id: String
       title: String
       description: String
-      Fruits: [Fruit]
+      fruits: [Fruit]
     }
     
     type Fruit {
@@ -28,10 +27,16 @@ let { buildSchema } = require('graphql');
       change(text: String): String
       createBucket(title: String, description: String): Bucket
       createFruit(bucketId: String, description: String): Fruit
+      deleteFruit: String
+      deleteBucket: String
     }
 
-  `);
-
+    schema {
+      query: Query
+      mutation: Mutation
+    }
+  `]
+  
   module.exports = {
-    schema,
+    typeDefs,
   }
