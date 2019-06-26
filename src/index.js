@@ -20,6 +20,8 @@ const initApp = async () => {
         return `hello ${text}`;
       },
       fruits: async (root, { bucketId }) =>{
+        console.log("ID bukcet-fruits", typeof(bucketId), bucketId)
+
         const response = await Fruits.find( { bucketId } ).toArray();
         console.log(response);
         return response;
@@ -43,7 +45,7 @@ const initApp = async () => {
   
     Mutation:{
       change: (root, {text}) => `You have entered: ${text}`,
-      createBucket: async ({title, description}) =>{
+      createBucket: async (root, {title, description}) =>{
         const response = await Buckets.insertOne({title, description});
         console.log(response.ops[0]._id);
         return Buckets.findOne(ObjectId(response.ops[0]._id));
@@ -66,8 +68,9 @@ const initApp = async () => {
     },
     
     Bucket: {
-      fruits: async (root, { _id }) =>{
-        const response = await Fruits.find({bucketId:_id}).toArray();
+      fruits: async ({ _id }) =>{
+        console.log("ID bukcet-fruits", typeof(_id), _id);
+        const response = await Fruits.find({ bucketId: _id.toString() }).toArray();
         console.log("bucket response", response);
         return response;
       }
