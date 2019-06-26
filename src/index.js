@@ -1,7 +1,7 @@
 let express = require('express');
 let graphqlHTTP = require('express-graphql');
-let { buildSchema } = require('graphql');
 let { MongoClient, ObjectId } = require('mongodb');
+let { schema } = require('./schema/schema')
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,34 +12,8 @@ const initApp = async () => {
 
   const mongoClient = await MongoClient.connect(MONGO_URL, {useNewUrlParser: true});
   const Buckets = mongoClient.db('demo').collection('buckets');
-  const Fruits = mongoClient.db('demo').collection('fruit');
-  const schema = buildSchema(`
-    type Query {
-      hello(text: String): String
-      buckets: [Bucket]
-      fruit(_id: String): Fruit
-      bucket(_id: String): Bucket
-    }
-
-    type Bucket {
-      _id: String
-      title: String
-      description: String
-      Fruits: [Fruit]
-    }
-    
-    type Fruit {
-      _id: String
-      description: String
-    }
-
-    type Mutation {
-      change(text: String): String
-      createBucket(title: String, description: String): Bucket
-    }
-
-  `);
-
+  const Fruits = mongoClient.db('demo').collection('fruits');
+  
   const root = { 
       hello: ({text}) => {
         console.log(text)
@@ -48,12 +22,33 @@ const initApp = async () => {
       change: ({text}) => `You have entered: ${text}`,
       createBucket: async ({title, description}) =>{
         const response = await Buckets.insertOne({title, description});
+        console.log(response.ops[0]);
+        return response.ops[0];
+      },
+      createFruit: async ({bucketID, description}) => {
+        const response = await Fruits.insertOne({bucketID, description});
+        console.log(response.ops[0]);
+        return response.ops[0];
+      },
+      fruits: async (bucketID) =>{
+        const response = await Fruits.find( { bucketID } ).toArray();
+        console.log(response);
+        return response;
+      },
+      allFruits: async () =>{
+        const response = await Fruits.find({}).toArray();
+        console.log(response);
         return response;
       },
       buckets: async () => {
         const res = await Buckets.find({}).toArray();
         console.log( res );
         return res;
+      },
+      bucket: async ({ _id }) => {
+        const response = await Buckets.findOne(ObjectId(_id));
+        console.log(response);
+        return response;
       }
   };
 
@@ -75,19 +70,3 @@ try {
 } catch (error) {
   console.log(error)
 }
-
-// var schema = buildSchema(`
-//   type Query {
-//     hello: String
-//   }
-// `);
-
-// var root = { hello: () => 'Hello world!' };
-
-// var app = express();
-// app.use('/graphql', graphqlHTTP({
-//   schema: schema,
-//   rootValue: root,
-//   graphiql: true,
-// }));
-// app.listen(4000, () => console.log('Now browse to localhost:4000/graphql'));
