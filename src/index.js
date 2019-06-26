@@ -22,16 +22,18 @@ const initApp = async () => {
       change: ({text}) => `You have entered: ${text}`,
       createBucket: async ({title, description}) =>{
         const response = await Buckets.insertOne({title, description});
-        console.log(response.ops[0]);
-        return response.ops[0];
+        console.log(response.ops[0]._id);
+        return Buckets.findOne(ObjectId(response.ops[0]._id));
       },
-      createFruit: async ({bucketID, description}) => {
-        const response = await Fruits.insertOne({bucketID, description});
+      createFruit: async (args) => {
+        const response = await Fruits.insertOne(args);
         console.log(response.ops[0]);
-        return response.ops[0];
+        const result = Fruits.findOne(ObjectId(response.ops[0]._id));
+        Buckets.findOneAndUpdate(ObjectId(args.bucketId), { $push: {Fruits: result } } )
+        return result;
       },
-      fruits: async (bucketID) =>{
-        const response = await Fruits.find( { bucketID } ).toArray();
+      fruits: async (bucketId) =>{
+        const response = await Fruits.find( { bucketId } ).toArray();
         console.log(response);
         return response;
       },
@@ -52,7 +54,6 @@ const initApp = async () => {
       }
   };
 
-
   app.use('/graphql', graphqlHTTP({
     schema: schema,
     rootValue: root,
@@ -61,8 +62,6 @@ const initApp = async () => {
   }))
 
   app.listen( PORT, () => console.log(`Listening on ${PORT}`))
-
-
 }
 
 try {

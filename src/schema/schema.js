@@ -4,11 +4,10 @@ let { buildSchema } = require('graphql');
     type Query {
       hello(text: String): String
       buckets: [Bucket]
-      fruits(bucketID: String): [Fruit]
+      fruits(bucketId: String): [Fruit]
       allFruits: [Fruit]
       fruit(_id: String): Fruit
       bucket(_id: String): Bucket
-
     }
 
     type Bucket {
@@ -20,14 +19,15 @@ let { buildSchema } = require('graphql');
     
     type Fruit {
       _id: String
-      bucketID: String
+      bucketId: String
       description: String
+      bucket: Bucket
     }
 
     type Mutation {
       change(text: String): String
       createBucket(title: String, description: String): Bucket
-      createFruit(bucketID: String, description: String): Fruit
+      createFruit(bucketId: String, description: String): Fruit
     }
 
   `);
