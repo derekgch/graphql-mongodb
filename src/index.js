@@ -57,11 +57,29 @@ const initApp = async () => {
         Buckets.findOneAndUpdate(ObjectId(args.bucketId), { $push: {fruits: result._id } } )
         return result;
       },
-      deleteFruit: async () =>{
+      updateFruit: async (root, { _id, newBucketId }) => {
+        const response = await Fruits.findOneAndUpdate({_id: ObjectId(_id)}, {$set: { bucketId: newBucketId }})
+        return Fruits.findOne(ObjectId(_id));
+      },
+      updateBucket: async (root, { _id, description }) =>{
+        console.log(_id,description )
+        const response = await Buckets.findOneAndUpdate({_id: ObjectId(_id)}, {$set: { description }});
+        console.log(response);
+        return Buckets.findOne(ObjectId(_id));
+      },
+      deleteFruit: async (root, { _id }) =>{
+        const response = Fruits.remove( ObjectId(_id) );
+        return response;
+      },
+      deleteBucket: async (root, { _id }) =>{
+        const response = Buckets.remove( ObjectId(_id) );
+        return response;
+      },
+      deleteAllFruit: async () =>{
         Fruits.remove( { } );
         return "All fruits are deleted.";
       },
-      deleteBucket: async() =>{
+      deleteAllBucket: async() =>{
         Buckets.remove( { } );
         return "All Buckets are deleted.";
       }

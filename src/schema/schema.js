@@ -27,8 +27,12 @@
       change(text: String): String
       createBucket(title: String, description: String): Bucket
       createFruit(bucketId: String, description: String): Fruit
-      deleteFruit: String
-      deleteBucket: String
+      updateFruit(_id: String, newBucketId: String): Fruit
+      updateBucket(_id: String, description: String): Bucket
+      deleteFruit(_id: String): Fruit
+      deleteBucket(_id: String): Bucket 
+      deleteAllFruit: String
+      deleteAllBucket: String
     }
 
     schema {
@@ -36,7 +40,7 @@
       mutation: Mutation
     }
   `]
-  
+
   module.exports = {
     typeDefs,
   }
