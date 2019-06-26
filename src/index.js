@@ -12,7 +12,7 @@ const initApp = async () => {
 
   const mongoClient = await MongoClient.connect(MONGO_URL, {useNewUrlParser: true});
   const Buckets = mongoClient.db('demo').collection('buckets');
-  const Questions = mongoClient.db('demo').collection('questions');
+  const Fruits = mongoClient.db('demo').collection('fruit');
   const schema = buildSchema(`
     type Query {
       hello(text: String): String
