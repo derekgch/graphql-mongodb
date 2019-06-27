@@ -46,4 +46,4 @@ type Query {
       query: Query
       mutation: Mutation
     }
-    ```
+    
