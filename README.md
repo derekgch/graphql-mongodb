@@ -6,7 +6,8 @@
 #### buckets and fruits 
 #### Bucket contains many fruits, one-to-many
 ## Schema:
-`type Query {
+```
+type Query {
       hello(text: String): String
       buckets: [Bucket]
       fruits(bucketId: String): [Fruit]
@@ -44,4 +45,5 @@
     schema {
       query: Query
       mutation: Mutation
-    }`
+    }
+    ```
