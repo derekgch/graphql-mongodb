@@ -16,29 +16,29 @@ const initApp = async () => {
   const resolvers = { 
     Query: {
       hello: (root, {text}) => {
-        console.log(text)
+        // console.log(text)
         return `hello ${text}`;
       },
       fruits: async (root, { bucketId }) =>{
-        console.log("ID bukcet-fruits", typeof(bucketId), bucketId)
+        // console.log("ID bukcet-fruits", typeof(bucketId), bucketId)
 
         const response = await Fruits.find( { bucketId } ).toArray();
-        console.log(response);
+        // console.log(response);
         return response;
       },
       allFruits: async () =>{
         const response = await Fruits.find({}).toArray();
-        console.log(response);
+        // console.log(response);
         return response;
       },
       buckets: async () => {
         const res = await Buckets.find({}).toArray();
-        console.log( res );
+        // console.log( res );
         return res;
       },
       bucket: async (root, { _id }) => {
         const response = await Buckets.findOne(ObjectId(_id));
-        console.log(response);
+        // console.log(response);
         return response;
       },
     },
@@ -47,12 +47,12 @@ const initApp = async () => {
       change: (root, {text}) => `You have entered: ${text}`,
       createBucket: async (root, {title, description}) =>{
         const response = await Buckets.insertOne({title, description});
-        console.log(response.ops[0]._id);
+        // console.log(response.ops[0]._id);
         return Buckets.findOne(ObjectId(response.ops[0]._id));
       },
       createFruit: async (root, args) => {
         const response = await Fruits.insertOne(args);
-        console.log(response);
+        // console.log(response);
         const result = Fruits.findOne(ObjectId(response.ops[0]._id));
         Buckets.findOneAndUpdate(ObjectId(args.bucketId), { $push: {fruits: result._id } } )
         return result;
@@ -62,17 +62,17 @@ const initApp = async () => {
         return Fruits.findOne(ObjectId(_id));
       },
       updateBucket: async (root, { _id, description }) =>{
-        console.log(_id,description )
+        // console.log(_id,description )
         const response = await Buckets.findOneAndUpdate({_id: ObjectId(_id)}, {$set: { description }});
-        console.log(response);
+        // console.log(response);
         return Buckets.findOne(ObjectId(_id));
       },
       deleteFruit: async (root, { _id }) =>{
-        const response = Fruits.remove( ObjectId(_id) );
+        const response = Fruits.remove( { _id: ObjectId(_id) });
         return response;
       },
       deleteBucket: async (root, { _id }) =>{
-        const response = Buckets.remove( ObjectId(_id) );
+        const response = Buckets.remove( { _id: ObjectId(_id) });
         return response;
       },
       deleteAllFruit: async () =>{
