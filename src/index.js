@@ -1,8 +1,8 @@
-let express = require('express');
-let graphqlHTTP = require('express-graphql');
-let { typeDefs } = require('./schema/schema')
-let { makeExecutableSchema } = require('graphql-tools');
-let { MongoClient, ObjectId } = require('mongodb');
+const express = require('express');
+const graphqlHTTP = require('express-graphql');
+const { typeDefs } = require('./schema/schema')
+const { makeExecutableSchema } = require('graphql-tools');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
