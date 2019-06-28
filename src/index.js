@@ -15,12 +15,7 @@ const initApp = async () => {
 
   const resolvers = { 
     Query: {
-      hello: (root, {text}) => {
-        // console.log(text)
-        return `hello ${text}`;
-      },
       fruits: async (root, { bucketId }) =>{
-        // console.log("ID bukcet-fruits", typeof(bucketId), bucketId)
 
         const response = await Fruits.find( { bucketId } ).toArray();
         // console.log(response);
@@ -44,7 +39,6 @@ const initApp = async () => {
     },
   
     Mutation:{
-      change: (root, {text}) => `You have entered: ${text}`,
       createBucket: async (root, {title, description}) =>{
         const response = await Buckets.insertOne({title, description});
         // console.log(response.ops[0]._id);

@@ -8,7 +8,6 @@
 ## Schema:
 ```
 type Query {
-      hello(text: String): String
       buckets: [Bucket]
       fruits(bucketId: String): [Fruit]
       allFruits: [Fruit]
@@ -31,7 +30,6 @@ type Query {
     }
 
     type Mutation {
-      change(text: String): String
       createBucket(title: String, description: String): Bucket
       createFruit(bucketId: String, description: String): Fruit
       updateFruit(_id: String, newBucketId: String): Fruit
