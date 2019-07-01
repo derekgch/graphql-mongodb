@@ -4,9 +4,17 @@ const { typeDefs } = require('./schema/schema')
 const { makeExecutableSchema } = require('graphql-tools');
 const { MongoClient, ObjectId } = require('mongodb');
 
+
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const MONGO_URL = 'mongodb://localhost:27017';
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 
 const initApp = async () => {
   const mongoClient = await MongoClient.connect(MONGO_URL, {useNewUrlParser: true});
@@ -81,9 +89,9 @@ const initApp = async () => {
     
     Bucket: {
       fruits: async ({ _id }) =>{
-        console.log("ID bukcet-fruits", typeof(_id), _id);
+        // console.log("ID bukcet-fruits", typeof(_id), _id);
         const response = await Fruits.find({ bucketId: _id.toString() }).toArray();
-        console.log("bucket response", response);
+        // console.log("bucket response", response);
         return response;
       }
     },
@@ -93,6 +101,8 @@ const initApp = async () => {
     typeDefs,
     resolvers,
   });
+
+  app.use(cors(corsOptions));
 
   app.use('/graphql', graphqlHTTP({
     schema: schema,
