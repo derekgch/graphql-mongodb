@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001;
 const MONGO_URL = 'mongodb://localhost:27017';
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3001',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -64,7 +64,6 @@ const initApp = async () => {
         return Fruits.findOne(ObjectId(_id));
       },
       updateBucket: async (root, { _id, description }) =>{
-        // console.log(_id,description )
         const response = await Buckets.findOneAndUpdate({_id: ObjectId(_id)}, {$set: { description }});
         // console.log(response);
         return Buckets.findOne(ObjectId(_id));
@@ -89,9 +88,7 @@ const initApp = async () => {
     
     Bucket: {
       fruits: async ({ _id }) =>{
-        // console.log("ID bukcet-fruits", typeof(_id), _id);
         const response = await Fruits.find({ bucketId: _id.toString() }).toArray();
-        // console.log("bucket response", response);
         return response;
       }
     },
