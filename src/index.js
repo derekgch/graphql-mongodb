@@ -11,10 +11,9 @@ const PORT = process.env.PORT || 3001;
 const MONGO_URL = 'mongodb://localhost:27017';
 
 const corsOptions = {
-  origin: 'http://localhost:3001',
+  origin: 'http://localhost:3000',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
-
 
 const initApp = async () => {
   const mongoClient = await MongoClient.connect(MONGO_URL, {useNewUrlParser: true});
@@ -106,6 +105,18 @@ const initApp = async () => {
     graphiql: true,
     pretty: true
   }))
+
+  app.route('*').all( (req, res, next) =>{
+    console.log("================")
+    console.log("================")
+    console.log("================")
+    console.log("req",req.headers);
+    console.log("================")
+    console.log("================")
+    console.log("================")
+
+    res.send(req.headers);
+  })
 
   app.listen( PORT, () => console.log(`Listening on ${PORT}`))
 }
