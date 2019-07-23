@@ -72,11 +72,11 @@ const initApp = async () => {
         return Fruits.findOne(ObjectId(_id));
       },
       deleteFruit: async (root, { _id }) =>{
-        const response = Fruits.remove( { _id: ObjectId(_id) });
+        const response = Fruits.deleteOne( { _id: ObjectId(_id) });
         return response;
       },
       deleteBucket: async (root, { _id }) =>{
-        const response = Buckets.remove( { _id: ObjectId(_id) });
+        const response = Buckets.deleteOne( { _id: ObjectId(_id) });
         return response;
       },
       deleteAllFruit: async () =>{
