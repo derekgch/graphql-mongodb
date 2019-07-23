@@ -58,14 +58,18 @@ const initApp = async () => {
         Buckets.findOneAndUpdate(ObjectId(args.bucketId), { $push: {fruits: result._id } } )
         return result;
       },
-      updateFruit: async (root, { _id, newBucketId }) => {
-        const response = await Fruits.findOneAndUpdate({_id: ObjectId(_id)}, {$set: { bucketId: newBucketId }})
+      updateFruit: async (root, { _id, description }) => {
+        const response = await Fruits.findOneAndUpdate({_id: ObjectId(_id)}, {$set: { description }})
         return Fruits.findOne(ObjectId(_id));
       },
       updateBucket: async (root, { _id, description }) =>{
         const response = await Buckets.findOneAndUpdate({_id: ObjectId(_id)}, {$set: { description }});
         // console.log(response);
         return Buckets.findOne(ObjectId(_id));
+      },
+      moveFruit: async (root, { _id, newBucketId }) => {
+        const response = await Fruits.findOneAndUpdate({_id: ObjectId(_id)}, {$set: { bucketId: newBucketId }})
+        return Fruits.findOne(ObjectId(_id));
       },
       deleteFruit: async (root, { _id }) =>{
         const response = Fruits.remove( { _id: ObjectId(_id) });

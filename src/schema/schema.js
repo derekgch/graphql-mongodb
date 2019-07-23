@@ -25,8 +25,9 @@
     type Mutation {
       createBucket(title: String, description: String): Bucket
       createFruit(bucketId: String, description: String): Fruit
-      updateFruit(_id: String, newBucketId: String): Fruit
+      updateFruit(_id: String, description: String): Fruit
       updateBucket(_id: String, description: String): Bucket
+      moveFruit(_id: String, newBucketId: String): Fruit
       deleteFruit(_id: String): Fruit
       deleteBucket(_id: String): Bucket 
       deleteAllFruit: String
