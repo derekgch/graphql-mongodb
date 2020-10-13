@@ -10,7 +10,7 @@
     "express-graphql": "^0.8.0",
     "graphql": "^14.7.0",
     "graphql-tools": "^4.0.8",
-    "mongodb": "^3.6.1",
+    "mongodb": "^3.6.2",
     "nodemon": "^2.0.4"
   },
   "devDependencies": {},
